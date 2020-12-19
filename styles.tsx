@@ -19,14 +19,20 @@ export const styles = StyleSheet.create({
       paddingVertical: 5
     },
     entryModal: {
-      flex: 1,
-      alignItems: 'center',
-      justifyContent: 'center',
-      marginHorizontal: 40,
+      alignItems: 'flex-start',
+      justifyContent: 'flex-start',
+      marginHorizontal: 20,
+      marginVertical: 40,
     },
     modalHeader: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between'
+    },
+    modalHeading: {
       fontWeight: 'bold',
-      fontSize: 16
+      fontSize: 28,
+      alignSelf:'flex-start'
     },
     titleTextInput: {
       fontSize: 20,
@@ -41,7 +47,8 @@ export const styles = StyleSheet.create({
       elevation: 2
     },
     buttonText: {
-      alignSelf: 'center'
+      alignSelf: 'center',
+      color: '#fff'
     },
     journalEntry: {
       padding: 20,
@@ -52,8 +59,12 @@ export const styles = StyleSheet.create({
       borderRadius: 20,
       color: '#444',
     },
-    journalEntriesList: {
-      marginTop: 40,
+    journalEntryTextInput: {
+      alignSelf: 'stretch',
+      marginVertical: 10,
+      backgroundColor: '#fff',
+      borderRadius: 20,
+      color: '#444',
     },
     floatingActionButton: {
       width: 80,
@@ -76,6 +87,11 @@ export const styles = StyleSheet.create({
       shadowRadius: 6.27,
 
       elevation: 10,
+    },
+    textButton:
+    {
+      color: "#2196F3",
+      fontSize: 16,
     }
   });
   

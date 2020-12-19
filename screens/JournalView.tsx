@@ -1,7 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Modal, TouchableHighlight, Alert, FlatList, 
-  TextInput, Button, Keyboard, TouchableWithoutFeedback, ScrollView } from 'react-native';
+  TextInput, Button, Keyboard, TouchableWithoutFeedback, ScrollView, SafeAreaView } from 'react-native';
 import { styles } from '../styles'
 import { AsyncStorage } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
@@ -11,11 +11,11 @@ import * as SQLite from 'expo-sqlite';
 
 const db = SQLite.openDatabase("journal.db");
 
-const DismissKeyboard = ({ children }) => (
+const DismissKeyboard = ({ children } : {children : undefined}) => (
   <TouchableWithoutFeedback 
   onPress={() => Keyboard.dismiss()}> {children}
   </TouchableWithoutFeedback>
-  );
+);
 
 type JournalEntryProps = {
   title?: string,
@@ -69,6 +69,7 @@ function JournalEntries() {
 type AddEntryButtonProps = {
   onPress:() => void;
 }
+
 function AddPostButton({onPress}: AddEntryButtonProps) {
   return(
     <TouchableOpacity style={styles.floatingActionButton} onPress={onPress}>
@@ -81,43 +82,44 @@ export default function JournalView() {
   const [modalVisible, setModalVisible] = useState(false);
   
   const CreateEntryModal = () =>
+  <SafeAreaView>
     <Modal
 
     animationType="slide"
     transparent={false}
     visible={modalVisible}
-  >
-    <TouchableWithoutFeedback
-      onPress={() => Keyboard.dismiss()}>
-
-      <View style={styles.entryModal}>
-
-          <Text style={styles.modalHeader}>New Journal Entry</Text>
+    >
+      <TouchableWithoutFeedback
+        onPress={() => Keyboard.dismiss()}>
+        <View style={styles.entryModal}>
+          <View style={styles.modalHeader}>
+            <TouchableHighlight
+              onPress={() => {
+              setModalVisible(!modalVisible);
+              }}
+            >
+              <Text style={styles.textButton}>Cancel</Text>
+            </TouchableHighlight>
+            <TouchableHighlight
+              style={{ ...styles.openButton, backgroundColor: "#2196F3" }}
+              onPress={() => {
+              setModalVisible(!modalVisible);
+              }}
+            >
+              <Text style={styles.buttonText}>Hide Modal</Text>
+            </TouchableHighlight>
+          </View>
+          <Text style={styles.modalHeading}>New Journal Entry</Text>
           <TextInput style={styles.titleTextInput} placeholder="Title (optional)"></TextInput>
-          <TextInput style={styles.journalEntry} multiline placeholder="Start writing"></TextInput>
-          <TouchableHighlight
-                style={{ ...styles.openButton, backgroundColor: "#2196F3" }}
-                onPress={() => {
-                  setModalVisible(!modalVisible);
-                }}
-              >
-            <Text style={styles.buttonText}>Hide Modal</Text>
-          </TouchableHighlight>
-      </View>
-    </TouchableWithoutFeedback>
+          <TextInput style={styles.journalEntryTextInput} multiline placeholder="Start writing"></TextInput>
+        </View>
+      </TouchableWithoutFeedback>
     </Modal>
-
+  </SafeAreaView>
   return(
-    <View style={styles.journalEntriesList}>
+    <View>
       <JournalEntries />
-      <AddPostButton onPress={() => {
-        if(!modalVisible){
-          setModalVisible(true)
-        }
-        else {
-          setModalVisible(false)
-        }
-      }}/>
+      <AddPostButton onPress={() => setModalVisible(!modalVisible)}/>
       <CreateEntryModal/>
     </View>
   );
